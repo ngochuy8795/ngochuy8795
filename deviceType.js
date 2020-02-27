@@ -8,7 +8,7 @@ var deviceType = new mongoose.Schema({
     namedevice: String,
     typeid: String,
     properties: 
-        [ {
+         {
             name: {
                 label: String,
                 htmltag: String,
@@ -40,7 +40,7 @@ var deviceType = new mongoose.Schema({
                 typeof: [String]
             }
         }
-        ]
+        
     
 })
 
