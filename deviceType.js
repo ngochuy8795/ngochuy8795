@@ -1,5 +1,5 @@
-// var express = require('express');
-// var app = express();
+var express = require('express');
+var app = express();
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/devicedb', {useNewUrlParser: true, useUnifiedTopology: true})
 
@@ -8,43 +8,39 @@ var deviceType = new mongoose.Schema({
     namedevice: String,
     typeid: String,
     properties: 
-        {
+        [ {
             name: {
-                type: {type: String},
                 label: String,
                 htmltag: String,
                 placeholder: String,
                 typeof: [String]
             },
             username: {
-                type: {type: String},
                 label: String,
                 htmltag: String,
                 placeholder: String,
                 typeof: [String]
             },
             password: {
-                type: {type: String},
                 label: String,
                 htmltag: String,
                 placeholder: String,
                 typeof: [String]
             },
             streamurl: {
-                type: {type: String},
                 label: String,
                 htmltag: String,
                 placeholder: String,
                 typeof: [String]
             },
             ptz: {
-                type: {type: String},
                 label: String,
                 htmltag: String,
                 placeholder: String,
                 typeof: [String]
             }
         }
+        ]
     
 })
 
@@ -80,4 +76,8 @@ user.create({
         },
     }
 })
-// app.listen(3000);
+
+
+app.get('/cctv/create', (req, res) => {
+})
+app.listen(3000);
