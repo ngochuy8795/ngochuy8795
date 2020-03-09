@@ -1,13 +1,26 @@
-var express = require("express");
-var app = express();
-var mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/devicedb", {
+var mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+let deviceTypeModel;
+let locationModel;
+function initDB() {
+  mongoose.connect("mongodb://localhost:27017/devicedb-demo", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
 
 // tạo schema
-var cctv = new mongoose.Schema({
+
+const device = new mongoose.Schema({
+    id: String,
+    name: {
+      vi_vn: String,
+      en_us: String
+    },
+    type: String,
+    properties: {}
+})
+
+const deviceType = new mongoose.Schema({
   typeId: String,
   typeName: {
     vi_vn: String,
@@ -31,9 +44,50 @@ var cctv = new mongoose.Schema({
   ]
 });
 
+// const location = new mongoose.Schema({
+//   localtionName : String,
+//   latitude: Number,
+//   longitude: Number,
+//   note: String,
+//   numOfDevice: Number,
+//   device: [{type: Schema.Types.ObjectId, ref: 'devices'}]
+// })
+
+const devicemodel = mongoose.model("device", device);
+devicemodel.create({
+    id : "cctv01",
+    name : {
+      vi_vn: "Camera Quan Sát Q1",
+      en_us: "Camera Q1"
+    },
+    type : "cctv",
+    properties : {
+        username : "root",
+        password : "root",
+        streamUrl : "rtsp://10.82.68.201/live.dp",
+        ptz : true
+    }
+})
+
+devicemodel.create({
+  id : "vds01",
+  name : {
+    vi_vn: "Đo đếm lưu lượng xe Q1",
+    en_us: "VDS Q1"
+  },
+  type : "vds",
+  properties : {
+      username : "root",
+      password : "root"
+  }
+})
+
 // biên dịch model từ schema (tham số 1 là tên collection tham số 2 là schema)
-var device = mongoose.model("deviceTypeTest", cctv);
-device.create({
+deviceTypeModel = mongoose.model("deviceType", deviceType);
+// locationModel = mongoose.model("location", location);
+
+
+deviceTypeModel.create({
   typeId: "cctv",
   typeName: {
     vi_vn: "Camera Quan Sát",
@@ -44,7 +98,7 @@ device.create({
       key: "userName",
       value: {
         keyType: "text",
-        label: { vi_vn: "Tài Khoản", en_us: "User Name" },
+        label: { vi_vn: "Tài Khoản", en_us: "Username" },
         placeholder: { vi_vn: "Nhập Tài Khoản", en_us: "Enter Username" }
       }
     },
@@ -67,14 +121,18 @@ device.create({
     {
       key: "ptz",
       value: {
-        keyType: "boolean",
+        keyType: "checkbox",
         label: { vi_vn: "PTZ", en_us: "PTZ" }
+      },
+      defaultValue: {
+        checked: false
       }
     }
-  ]
+  ],
+
 });
 
-device.create({
+deviceTypeModel.create({
   typeId: "vds",
   typeName: {
     vi_vn: "Đếm lưu lượng xe",
@@ -85,7 +143,7 @@ device.create({
       key: "userName",
       value: {
         keyType: "text",
-        label: { vi_vn: "Tài Khoản", en_us: "User Name" },
+        label: { vi_vn: "Tài Khoản", en_us: "Username" },
         placeholder: { vi_vn: "Nhập Tài Khoản", en_us: "Enter Username" }
       }
     },
@@ -100,6 +158,20 @@ device.create({
   ]
 });
 
-// app.get('/cctv/create', (req, res) => {
-// })
-// app.listen(3000);
+
+}
+// async function updateDeviceList(deviceId, typeId) {
+//   console.log({deviceId, typeId});
+//   const filter = {
+//     typeId
+//   };
+//   await deviceTypeModel.updateOne(filter, {
+//     $push: {
+//       device: mongoose.Types.ObjectId(deviceId)
+//     }
+//   })
+// }
+
+// module.exports = {
+//   updateDeviceList, initDB
+// }
