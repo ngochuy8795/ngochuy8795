@@ -11,7 +11,6 @@ function initDB() {
 // tạo schema
 
 const device = new mongoose.Schema({
-    id: String,
     name: {
       vi_vn: String,
       en_us: String
@@ -55,12 +54,11 @@ const deviceType = new mongoose.Schema({
 
 const devicemodel = mongoose.model("device", device);
 devicemodel.create({
-    id : "cctv01",
     name : {
       vi_vn: "Camera Quan Sát Q1",
-      en_us: "Camera Q1"
+      en_us: ""
     },
-    type : "cctv",
+    typeId : "cctv",
     properties : {
         username : "root",
         password : "root",
@@ -70,7 +68,6 @@ devicemodel.create({
 })
 
 devicemodel.create({
-  id : "vds01",
   name : {
     vi_vn: "Đo đếm lưu lượng xe Q1",
     en_us: "VDS Q1"
@@ -94,6 +91,14 @@ deviceTypeModel.create({
     en_us: "Camera"
   },
   properties: [
+    {
+      key: "deviceName",
+      value: {
+        keyType: "text",
+        label: { vi_vn: "Tên Thiết Bị", en_us: "Device Name" },
+        placeholder: { vi_vn: "Nhập tên thiết bị", en_us: "Enter Device Name" }
+      }
+    },
     {
       key: "userName",
       value: {
