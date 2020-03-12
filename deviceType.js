@@ -20,8 +20,8 @@ const device = new mongoose.Schema({
 })
 
 const deviceType = new mongoose.Schema({
-  typeId: String,
-  typeName: {
+  id: String,
+  name: {
     vi_vn: String,
     en_us: String
   },
