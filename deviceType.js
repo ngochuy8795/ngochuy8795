@@ -37,20 +37,15 @@ const deviceType = new mongoose.Schema({
         placeholder: {
           vi_vn: String,
           en_us: String
-        }
+        },
+        validates: {
+          required: boolean
+        },
+        defaultValue: {type: boolean, default: false}
       }
     }
   ]
 });
-
-// const location = new mongoose.Schema({
-//   localtionName : String,
-//   latitude: Number,
-//   longitude: Number,
-//   note: String,
-//   numOfDevice: Number,
-//   device: [{type: Schema.Types.ObjectId, ref: 'devices'}]
-// })
 
 const devicemodel = mongoose.model("device", device);
 devicemodel.create({
@@ -58,7 +53,7 @@ devicemodel.create({
       vi_vn: "Camera Quan Sát Q1",
       en_us: ""
     },
-    typeId : "cctv",
+    type : "cctv",
     properties : {
         username : "root",
         password : "root",
@@ -81,12 +76,10 @@ devicemodel.create({
 
 // biên dịch model từ schema (tham số 1 là tên collection tham số 2 là schema)
 deviceTypeModel = mongoose.model("deviceType", deviceType);
-// locationModel = mongoose.model("location", location);
-
 
 deviceTypeModel.create({
-  typeId: "cctv",
-  typeName: {
+  id: "cctv",
+  name: {
     vi_vn: "Camera Quan Sát",
     en_us: "Camera"
   },
@@ -96,7 +89,8 @@ deviceTypeModel.create({
       value: {
         keyType: "text",
         label: { vi_vn: "Tên Thiết Bị", en_us: "Device Name" },
-        placeholder: { vi_vn: "Nhập tên thiết bị", en_us: "Enter Device Name" }
+        placeholder: { vi_vn: "Nhập tên thiết bị", en_us: "Enter Device Name" },
+        validates: {required: true}
       }
     },
     {
@@ -104,7 +98,8 @@ deviceTypeModel.create({
       value: {
         keyType: "text",
         label: { vi_vn: "Tài Khoản", en_us: "Username" },
-        placeholder: { vi_vn: "Nhập Tài Khoản", en_us: "Enter Username" }
+        placeholder: { vi_vn: "Nhập Tài Khoản", en_us: "Enter Username" },
+        validates: {required: false}
       }
     },
     {
@@ -112,7 +107,8 @@ deviceTypeModel.create({
       value: {
         keyType: "password",
         label: { vi_vn: "Mật Khẩu", en_us: "Password" },
-        placeholder: { vi_vn: "Nhập Mật Khẩu", en_us: "Enter Password"}
+        placeholder: { vi_vn: "Nhập Mật Khẩu", en_us: "Enter Password"},
+        validates: {required: false}
       }
     },
     {
@@ -120,7 +116,8 @@ deviceTypeModel.create({
       value: {
         keyType: "url",
         label: { vi_vn: "Đường dẫn trực tiếp", en_us: "Stream Url" },
-        placeholder: { vi_vn: "Đường dẫn trực tiếp", en_us: "Stream Url"}
+        placeholder: { vi_vn: "Đường dẫn trực tiếp", en_us: "Stream Url"},
+        validates: {required: true}
       }
     },
     {
@@ -129,6 +126,7 @@ deviceTypeModel.create({
         keyType: "checkbox",
         label: { vi_vn: "PTZ", en_us: "PTZ" }
       },
+      validates: {required: false},
       defaultValue: {
         checked: false
       }
@@ -137,31 +135,6 @@ deviceTypeModel.create({
 
 });
 
-deviceTypeModel.create({
-  typeId: "vds",
-  typeName: {
-    vi_vn: "Đếm lưu lượng xe",
-    en_us: "VDS"
-  },
-  properties: [
-    {
-      key: "userName",
-      value: {
-        keyType: "text",
-        label: { vi_vn: "Tài Khoản", en_us: "Username" },
-        placeholder: { vi_vn: "Nhập Tài Khoản", en_us: "Enter Username" }
-      }
-    },
-    {
-      key: "password",
-      value: {
-        keyType: "password",
-        label: { vi_vn: "Mật Khẩu", en_us: "Password" },
-        placeholder: { vi_vn: "Nhập Mật Khẩu", en_us: "Enter Password"}
-      }
-    }
-  ]
-});
 
 
 }
